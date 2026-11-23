@@ -75,3 +75,31 @@ jobs:
           releaseDraft: true
           prerelease: false
           args: ${{ matrix.args }}
+
+  rename-assets:
+    name: Prefix asset versions with 'v'
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Rename release assets to Dronesmith_v<version>
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          VERSION="${TAG#v}"
+          echo "Renaming assets: ${VERSION} -> v${VERSION}"
+          assets=$(gh api "repos/$REPO/releases/tags/$TAG" --jq '.assets[] | "\(.id)\t\(.name)"')
+          while IFS=$'\t' read -r id name; do
+            [ -z "$id" ] && continue
+            if [[ "$name" == *"_${VERSION}_"* ]]; then
+              new="${name/_${VERSION}_/_v${VERSION}_}"
+            elif [[ "$name" == *"-${VERSION}-"* ]]; then
+              new="${name/-${VERSION}-/-v${VERSION}-}"
+            else
+              continue
+            fi
+            echo "$name -> $new"
+            gh api -X PATCH "repos/$REPO/releases/assets/$id" -f name="$new" >/dev/null
+          done <<< "$assets"
