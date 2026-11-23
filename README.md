@@ -53,6 +53,20 @@ npm run make
 `.github/workflows/build.yml` type-checks and builds the web bundle on Linux and
 builds the Tauri app on Windows for every push and pull request.
 
+## Releases
+
+`.github/workflows/release.yml` builds installers for Windows, Linux and macOS
+(Apple silicon and Intel) and attaches them to a draft GitHub Release whenever a
+`v*` tag is pushed:
+
+```sh
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+Review the draft release on GitHub, then publish it. macOS bundles are unsigned
+unless signing secrets are configured, so Gatekeeper will warn on first launch.
+
 ## License
 
 [MIT](LICENSE)
