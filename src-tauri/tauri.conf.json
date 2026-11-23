@@ -1,0 +1,35 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Dronesmith",
+  "version": "1.0.0",
+  "identifier": "in.hexcod.dronesmith",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:5173",
+    "beforeDevCommand": "npm run web:dev",
+    "beforeBuildCommand": "npm run web:build"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Dronesmith",
+        "width": 1280,
+        "height": 860,
+        "minWidth": 940,
+        "minHeight": 620
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": ["icons/icon.ico"],
+    "resources": {
+      "../resources/libusb0.dll": "resources/libusb0.dll",
+      "../resources/hms.json": "resources/hms.json"
+    }
+  }
+}

@@ -1,0 +1,129 @@
+/* Reset, colors and typography come from the Chakra theme (renderer/theme.tsx).
+   The --af-* variables mirror the theme palette for the raw SVG schematic, so
+   it tracks the light/dark toggle. Light is the default; `.dark` on <html>
+   switches both these variables and the Chakra `_dark` tokens. */
+:root {
+  --af-canvas: #eef1f6;
+  --af-panel: #ffffff;
+  --af-line: #e3e8f0;
+  --af-line-strong: #cfd7e2;
+  --af-text: #131822;
+  --af-text-subtle: #8a93a3;
+  --af-accent: #2f6fdb;
+}
+
+:root.dark {
+  --af-canvas: #0a0d12;
+  --af-panel: #121821;
+  --af-line: #1f2835;
+  --af-line-strong: #2c3848;
+  --af-text: #e7ecf3;
+  --af-text-subtle: #6b788b;
+  --af-accent: #5ab0ff;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  /* Desktop chrome is not selectable; values worth copying opt back in. */
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.selectable {
+  user-select: text;
+}
+
+/* Custom title bar: the bar drags the window, its controls do not. */
+.drag {
+  -webkit-app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--af-line-strong);
+  background-clip: content-box;
+  border: 3px solid transparent;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--af-text-subtle);
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Status dot that is waiting on something. */
+@keyframes pulse-ring {
+  from {
+    box-shadow: 0 0 0 0 color-mix(in srgb, currentColor 55%, transparent);
+  }
+  to {
+    box-shadow: 0 0 0 7px transparent;
+  }
+}
+
+.pulse {
+  animation: pulse-ring 1.6s ease-out infinite;
+}
+
+/* Search sweep on the aircraft schematic (viewBox is 320 x 240). */
+@keyframes sweep {
+  from {
+    transform: scale(0.15);
+    opacity: 0.6;
+  }
+  to {
+    transform: scale(1);
+    opacity: 0;
+  }
+}
+
+.sweep {
+  transform-origin: 160px 120px;
+  animation: sweep 2.8s ease-out infinite;
+}
+
+.sweep-late {
+  animation-delay: 1.4s;
+}
+
+/* Schematic node still waiting for its module to answer. */
+@keyframes blink {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.blink {
+  animation: blink 1.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse,
+  .sweep,
+  .blink {
+    animation: none;
+  }
+
+  .sweep {
+    opacity: 0;
+  }
+}
