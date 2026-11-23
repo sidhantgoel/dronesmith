@@ -26,7 +26,7 @@
   "bundle": {
     "active": true,
     "targets": "all",
-    "icon": ["icons/icon.ico"],
+    "icon": ["icons/icon.png", "icons/icon.ico"],
     "resources": {
       "../resources/libusb0.dll": "resources/libusb0.dll",
       "../resources/hms.json": "resources/hms.json"
